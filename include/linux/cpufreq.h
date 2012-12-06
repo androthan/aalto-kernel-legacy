@@ -374,6 +374,7 @@ extern struct cpufreq_governor cpufreq_gov_conservative;
 extern struct cpufreq_governor cpufreq_gov_hotplug;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_hotplug)
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SMARTASS2)
 extern struct cpufreq_governor cpufreq_gov_smartass2;
@@ -382,6 +383,11 @@ extern struct cpufreq_governor cpufreq_gov_smartass2;
 extern struct cpufreq_governor cpufreq_gov_ondemandboost;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_ondemandboost)
 >>>>>>> fcf4a48... cpufreq: add ondemandboost governor
+=======
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SMARTASS2)
+extern struct cpufreq_governor cpufreq_gov_smartass2;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_smartass2)
+>>>>>>> 235cdc2... cpufreq: add smartassV2 governor
 #endif
 
 

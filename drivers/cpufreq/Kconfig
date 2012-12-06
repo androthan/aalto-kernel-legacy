@@ -130,6 +130,7 @@ config CPU_FREQ_DEFAULT_GOV_SMARTASS2
 	help
 	   Use the CPUFreq governor 'smartassV2' as default.
 
+<<<<<<< HEAD
 config CPU_FREQ_DEFAULT_GOV_ONDEMANDBOOST
 	bool "ondemandboost"
 	select CPU_FREQ_GOV_ONDEMANDBOOST
@@ -137,6 +138,8 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMANDBOOST
 	help
 	  Use the CPUFreq governor 'ondemandboost' as default.
 
+=======
+>>>>>>> 235cdc2... cpufreq: add smartassV2 governor
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -245,6 +248,7 @@ config CPU_FREQ_GOV_SMARTASS2
 
 	   If in doubt, say N.
 
+<<<<<<< HEAD
 config CPU_FREQ_GOV_ONDEMANDBOOST
 	tristate "'ondemandboost' cpufreq policy governor"
 	select CPU_FREQ_TABLE
@@ -253,4 +257,6 @@ config CPU_FREQ_GOV_ONDEMANDBOOST
 
 	  If in doubt, say N.
 
+=======
+>>>>>>> 235cdc2... cpufreq: add smartassV2 governor
 endif	# CPU_FREQ

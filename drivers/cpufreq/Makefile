@@ -11,7 +11,10 @@ obj-$(CONFIG_CPU_FREQ_GOV_ONDEMAND)	+= cpufreq_ondemand.o
 obj-$(CONFIG_CPU_FREQ_GOV_CONSERVATIVE)	+= cpufreq_conservative.o
 obj-$(CONFIG_CPU_FREQ_GOV_HOTPLUG)	+= cpufreq_hotplug.o
 obj-$(CONFIG_CPU_FREQ_GOV_SMARTASS2)	+= cpufreq_smartass2.o
+<<<<<<< HEAD
 obj-$(CONFIG_CPU_FREQ_GOV_ONDEMANDBOOST)	+= cpufreq_ondemandboost.o
+=======
+>>>>>>> 235cdc2... cpufreq: add smartassV2 governor
 
 # CPUfreq cross-arch helpers
 obj-$(CONFIG_CPU_FREQ_TABLE)		+= freq_table.o
