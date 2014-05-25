@@ -1,5 +1,7 @@
 This branch is not longer supported!
-It won't work woth Android KitKat.
+It won't work with Android KitKat.
+Everthing has been merged to branch: cm-11.0.
+Use branch 'cm-11.0' to build the kernel for this device.
 
 -------------------------------------------------------
 
