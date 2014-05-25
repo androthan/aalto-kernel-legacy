@@ -1,3 +1,8 @@
+This branch is not longer supported!
+It won't work woth Android KitKat.
+
+-------------------------------------------------------
+
 Samsung-OMAP3 Android-Linux kernel 2.6.35.7 for the Samsung Galaxy Player 3.6 (aalto)
 
 This is based on the stock kernel (from opensource.samsung.com) with some fixes, driver upgrades, improvements and backported driver from the 3.0.x kernel for OMAP3. This kernel is modified for booting Android 4.4.x.
