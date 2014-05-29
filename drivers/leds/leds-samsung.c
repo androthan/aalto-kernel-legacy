@@ -129,14 +129,11 @@ static int __devexit sec_led_remove(struct platform_device *pdev)
 	return 0;
 }
 
-static void sec_led_shutdown(struct platform_device *pdev)
+static int sec_led_shutdown(struct platform_device *pdev)
 {
 	gpio_direction_output(OMAP_GPIO_LED_EN, 0);
 
 	return 0;
-	gpio_direction_output(OMAP_GPIO_LED_EN1, 0);
-	gpio_direction_output(OMAP_GPIO_LED_EN2, 0);
-	del_timer(&bl_timer);
 }
 
 #if 0
@@ -197,4 +194,5 @@ module_exit(sec_led_exit);
 
 MODULE_DESCRIPTION("SAMSUNG LED driver");
 MODULE_LICENSE("GPL");
+
 
