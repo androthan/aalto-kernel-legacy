@@ -131,15 +131,12 @@ static int __devexit sec_led_remove(struct platform_device *pdev)
 
 static void sec_led_shutdown(struct platform_device *pdev)
 {
-<<<<<<< HEAD
 	gpio_direction_output(OMAP_GPIO_LED_EN, 0);
 
 	return 0;
-=======
 	gpio_direction_output(OMAP_GPIO_LED_EN1, 0);
 	gpio_direction_output(OMAP_GPIO_LED_EN2, 0);
 	del_timer(&bl_timer);
->>>>>>> 6800eb9... drivers: leds: fix sec_led_shutdown type
 }
 
 #if 0
