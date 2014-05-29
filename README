@@ -6,7 +6,7 @@ How to build:
 1. Download kernel source as zip-file OR clone the git repo to your PC (LINUX)
 2. (Extract if needed)
 3. Command: make aalto_defconfig
-4. Command make -jX   # -j"Numbers of CPU cores" e.g.: make -j4
+4. Command: make -jX LOCALVERSION=-CL1184533                  # -j"Numbers of CPU cores" e.g.: make -j4
 5. The kernel is in arch/arm/boot/zImage
 
 Support:
