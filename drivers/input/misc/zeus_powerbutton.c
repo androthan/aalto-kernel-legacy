@@ -26,9 +26,8 @@
 
 #include <linux/i2c/twl.h>
 
-<<<<<<< HEAD
 //#define USE_DEBOUNCE	/* to prevent chattering effect for pwr and home button */
-=======
+
 // For calculation of home key delay
 #include <linux/time.h>
 
@@ -36,7 +35,6 @@
 #define POWER_KEY_FLAG (1<<0)
 #define VOLDN_KEY_FLAG (1<<1)
 #define VOLUP_KEY_FLAG (1<<2)
->>>>>>> 8d8db6e... Fix (reworked): Home button press or press and hold were recognized as multiple presses.
 
 #ifdef USE_DEBOUNCE
 #define DEBOUNCE_INTERVAL_MS	10
@@ -46,8 +44,7 @@ static int __devinit power_key_driver_probe(struct platform_device *plat_dev);
 static irqreturn_t powerkey_press_handler(int irq_num, void * dev);
 #ifdef CONFIG_INPUT_HARD_RESET_KEY
 static irqreturn_t homekey_press_handler(int irq_num, void * dev);
-<<<<<<< HEAD
-=======
+
 int home_key_press_status = 0;
 int last_home_key_press_status = 0;
 static struct timespec home_key_up_time = {0, 0};
@@ -55,7 +52,6 @@ static struct timespec home_key_up_time = {0, 0};
 #ifdef CONFIG_INPUT_GPIO_VOLUME_KEY
 static irqreturn_t volume_down_key_press_handler(int irq_num, void * dev);
 static irqreturn_t volume_up_key_press_handler(int irq_num, void * dev);
->>>>>>> 8d8db6e... Fix (reworked): Home button press or press and hold were recognized as multiple presses.
 #endif
 
 struct work_struct  lcd_work;
@@ -70,7 +66,6 @@ void lcd_work_func(struct work_struct *work)
 	twl_i2c_write_u8(TWL4030_MODULE_PM_RECEIVER, 0xe0, 0x23);	/* VAUX4 devgrp */
 }
 
-<<<<<<< HEAD
 static struct input_dev *g_input_dev = NULL;
 struct work_struct pwr_button_work;
 static void pwr_button_work_func(struct work_struct* work)
@@ -105,7 +100,6 @@ static void home_button_work_func(struct work_struct* work)
 static struct timer_list debounce_pwrbtn_timer;
 
 static void debounce_pwrbtn_timer_handler(unsigned long data)
-=======
 // For calculation of home key delay
 static inline u_int64_t ts_sub_to_ms(struct timespec dest, struct timespec src) {
 	u_int64_t result;
@@ -121,7 +115,6 @@ static inline u_int64_t ts_sub_to_ms(struct timespec dest, struct timespec src) 
 }
 
 ssize_t gpiokey_pressed_show(struct device *dev, struct device_attribute *attr, char *buf)
->>>>>>> 8d8db6e... Fix (reworked): Home button press or press and hold were recognized as multiple presses.
 {
 	schedule_work(&pwr_button_work);
 }
@@ -179,12 +172,10 @@ static irqreturn_t homekey_press_handler(int irq_num, void * dev)
 {
 	struct input_dev *ip_dev = (struct input_dev *)dev;
   
-<<<<<<< HEAD
 	if (!ip_dev) {
 		dev_err(ip_dev->dev.parent,"Input Device not allocated\n");
 		return IRQ_HANDLED;
 	}
-=======
   if(!ip_dev){
     dev_err(ip_dev->dev.parent,"Input Device not allocated\n");
     return IRQ_HANDLED;
@@ -226,7 +217,6 @@ static irqreturn_t homekey_press_handler(int irq_num, void * dev)
   dev_dbg(ip_dev->dev.parent,"Sent KEY_HOME event = %d\n",home_key_press_status);
   printk("Sent KEY_HOME event = %d\n",home_key_press_status);
 #endif
->>>>>>> 8d8db6e... Fix (reworked): Home button press or press and hold were recognized as multiple presses.
 
 	if (g_input_dev == NULL)
 		g_input_dev = (struct input_dev*)dev;
