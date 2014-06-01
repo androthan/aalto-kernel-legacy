@@ -123,8 +123,6 @@ config CPU_FREQ_DEFAULT_GOV_HOTPLUG
 	  support the hotplug governor. If unsure have a look at
 	  the help section of the driver. Fallback governor will be the
 	  performance governor.
-<<<<<<< HEAD
-=======
 
 config CPU_FREQ_DEFAULT_GOV_SMARTASS2
 	bool "smartass2"
@@ -139,7 +137,6 @@ config CPU_FREQ_DEFAULT_GOV_ONDEMANDBOOST
 	help
 	  Use the CPUFreq governor 'ondemandboost' as default.
 
->>>>>>> fcf4a48... cpufreq: add ondemandboost governor
 endchoice
 
 config CPU_FREQ_GOV_PERFORMANCE
@@ -240,8 +237,6 @@ config CPU_FREQ_GOV_HOTPLUG
 
 	  If in doubt, say N.
 
-<<<<<<< HEAD
-=======
 config CPU_FREQ_GOV_SMARTASS2
 	tristate "'smartassV2' cpufreq governor"
 	depends on CPU_FREQ
@@ -258,5 +253,4 @@ config CPU_FREQ_GOV_ONDEMANDBOOST
 
 	  If in doubt, say N.
 
->>>>>>> fcf4a48... cpufreq: add ondemandboost governor
 endif	# CPU_FREQ
