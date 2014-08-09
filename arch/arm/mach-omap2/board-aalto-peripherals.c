@@ -36,6 +36,8 @@
 #include <linux/gpio.h>
 #include <linux/i2c/twl.h>
 #include <linux/regulator/machine.h>
+#include <linux/regulator/fixed.h>
+#include <linux/wl12xx.h>
 #include <linux/mmc/host.h>
 #include <linux/leds.h>
 #include "twl4030.h"
@@ -386,6 +388,11 @@ static struct regulator_consumer_supply omap_board_vmmc2_supply[] = {
 	REGULATOR_SUPPLY("vmmc2", NULL),
 };
 
+static struct regulator_consumer_supply omap_board_vmmc3_supply = {
+	.supply = "vmmc",
+	.dev_name = "omap_hsmmc.2",
+};
+
 static struct regulator_consumer_supply omap_board_vaux1_supply = {
 	.supply = "vaux1",
 };
@@ -451,6 +458,25 @@ static struct regulator_init_data omap_board_vmmc2 = {
 	.consumer_supplies      = omap_board_vmmc2_supply,
 
 };
+
+static struct regulator_init_data omap_board_vmmc3 = {
+	.constraints = {
+	.valid_ops_mask = REGULATOR_CHANGE_STATUS,
+	},
+	.num_consumer_supplies = 1,
+	.consumer_supplies = &omap_board_vmmc3_supply,
+};
+
+static struct fixed_voltage_config omap_board_vwlan = {
+	.supply_name = "vwl1271",
+	.microvolts = 1800000, /* 1.8V */
+	.gpio = AALTO_WIFI_PMENA_GPIO,
+	.startup_delay = 70000, /* 70msec */
+	.enable_high = 1,
+	.enabled_at_boot = 0,
+	.init_data = &omap_board_vmmc3,
+};
+
 #endif
 #ifdef CONFIG_TOUCHSCREEN_ZINITIX
 static struct regulator_init_data omap_board_vmmc2 = {
@@ -513,6 +539,15 @@ static struct regulator_init_data omap_board_vsim = {
 	.consumer_supplies      = &omap_board_vsim_supply,
 };
 
+static struct platform_device omap_vwlan_device = {
+	.name = "reg-fixed-voltage",
+	.id = 1,
+	.dev = {
+		.platform_data = &omap_board_vwlan,
+	},
+};
+
+
 /* CHKIM 2011/04/01 for TI-WIFI  : Add MMC3 */
 static struct omap2_hsmmc_info mmc[] __initdata = {
 	{
@@ -532,10 +567,12 @@ static struct omap2_hsmmc_info mmc[] __initdata = {
 		.power_saving	= true,
 	},
 	{
+		.name 		= "wl1271",
 		.mmc		= 3,
-		.caps		= MMC_CAP_4_BIT_DATA ,
-		.gpio_cd	= -EINVAL,
+		.caps		= MMC_CAP_4_BIT_DATA | MMC_CAP_POWER_OFF_CARD,
 		.gpio_wp	= -EINVAL,
+		.gpio_cd	= -EINVAL,
+		.nonremovable	= true,
 		.vcc_aux_disable_is_sleep = true,
 	},
 	{}      /* Terminator */
@@ -607,13 +644,13 @@ static int omap_board_twl_gpio_setup(struct device *dev,
 	//mmc[0].gpio_cd = gpio + 0;
 
 	 mmc[1].gpio_cd = 23;
-#ifdef CONFIG_MMC_EMBEDDED_SDIO
-	/* The controller that is connected to the 128x device
-	 * should have the card detect gpio disabled. This is
-	 * achieved by initializing it with a negative value
-	 */
-	mmc[CONFIG_TIWLAN_MMC_CONTROLLER - 1].gpio_cd = -EINVAL;
-#endif
+//#ifdef CONFIG_MMC_EMBEDDED_SDIO
+//	/* The controller that is connected to the 128x device
+//	 * should have the card detect gpio disabled. This is
+//	 * achieved by initializing it with a negative value
+//	 */
+//	mmc[CONFIG_TIWLAN_MMC_CONTROLLER - 1].gpio_cd = -EINVAL;
+//#endif
 
 	omap2_hsmmc_init(mmc);
 
@@ -660,18 +697,18 @@ static struct omap_board_config_kernel board_config[] __initdata = {
 };
 
 
-#ifdef CONFIG_WL127X_RFKILL
-static struct wl127x_rfkill_platform_data wl127x_plat_data = {
-	.bt_nshutdown_gpio = OMAP_GPIO_BT_NRST,	/* Bluetooth Enable GPIO */
-	.fm_enable_gpio = -1,	/* FM Enable GPIO */
-};
-
-static struct platform_device zoom2_wl127x_device = {
-	.name = "wl127x-rfkill",
-	.id = -1,
-	.dev.platform_data = &wl127x_plat_data,
-};
-#endif
+//#ifdef CONFIG_WL127X_RFKILL
+//static struct wl127x_rfkill_platform_data wl127x_plat_data = {
+//	.bt_nshutdown_gpio = OMAP_GPIO_BT_NRST,	/* Bluetooth Enable GPIO */
+//	.fm_enable_gpio = -1,	/* FM Enable GPIO */
+//};
+//
+//static struct platform_device zoom2_wl127x_device = {
+//	.name = "wl127x-rfkill",
+//	.id = -1,
+//	.dev.platform_data = &wl127x_plat_data,
+//};
+//#endif
 
 #ifdef CONFIG_KEYBOARD_AALTO_GPIO_KEY
 
@@ -945,9 +982,9 @@ static struct spi_board_info board_spi_board_info[] __initdata = {
 static struct platform_device *board_devices[] __initdata = {
 
 	&headset_switch_device,
-#ifdef CONFIG_WL127X_RFKILL
-	&zoom2_wl127x_device,
-#endif
+//#ifdef CONFIG_WL127X_RFKILL
+//	&zoom2_wl127x_device,
+//#endif
 #ifdef CONFIG_INPUT_ZEUS_EAR_KEY
 	&board_ear_key_device,
 #endif
@@ -1396,7 +1433,9 @@ void __init omap_board_peripherals_init(void)
        omap_board_usb_data.sensor_dev = &samsung_pl_sensor_power_device.dev;    // Add for regulator
        
 	//spi_register_board_info( board_spi_board_info, ARRAY_SIZE( board_spi_board_info ) );
-       
+	printk("WL12XX-DBG: Initializing wl12xx device...\n");
+	platform_device_register(&omap_vwlan_device);
+	printk("WL12XX-DBG: Registering ended. May successful? ;-)\n");
 	atmel_dev_init();
 	omap_serial_init(omap_serial_platform_data);
 	usb_musb_init(&musb_board_data);

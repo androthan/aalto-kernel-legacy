@@ -69,6 +69,11 @@ extern void twl4030_bci_battery_init(void);
 
 #define OMAP3_WAKEUP (PRCM_WAKEUP_T2_KEYPAD |\
 			PRCM_WAKEUP_TOUCHSCREEN | PRCM_WAKEUP_UART)
+/* TI WL127X connectivity driver GPIO definition */
+#define AALTO_WIFI_PMENA_GPIO 160
+#define AALTO_WIFI_IRQ_GPIO 99
+
+
 
 /* SBL-Revision String */
 #if defined CONFIG_SAMSUNG_EMU_HW_REV
