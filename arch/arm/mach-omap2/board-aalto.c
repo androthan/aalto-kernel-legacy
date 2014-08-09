@@ -32,6 +32,7 @@
 #include <linux/platform_device.h>
 #include <linux/input.h>
 #include <linux/gpio.h>
+#include <linux/skbuff.h>
 #include <linux/bootmem.h>
 #include <linux/reboot.h>
 
