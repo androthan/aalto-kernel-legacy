@@ -199,9 +199,27 @@ static struct wl12xx_platform_data aalto_wlan_data __initdata = {
 static void aalto_wifi_init(void)
 {
 	config_wlan_mux();
-	if (wl12xx_set_platform_data(&aalto_wlan_data))
-	pr_err("Error while setting wl12xx data\n");
+	int ret;
+
+	ret = gpio_request(AALTO_WIFI_PMENA_GPIO, "wifi_pmena");
+	if (ret < 0) {
+		printk(KERN_ERR "%s: can't reserve GPIO: %d\n", __func__,
+			AALTO_WIFI_PMENA_GPIO);
+		gpio_free(AALTO_WIFI_PMENA_GPIO);
 }
+	gpio_direction_output(AALTO_WIFI_PMENA_GPIO, 0);
+
+	if (wl12xx_set_platform_data(&aalto_wlan_data))
+	pr_err("WL12XX-DBG: error while setting wl12xx data\n");
+	printk("WL12XX-DBG: Wi-Fi init done\n");
+
+	return 0;
+	
+
+}
+
+// Initializing WiFi H/W
+device_initcall(aalto_wifi_init);
 
 
 #define GPIO_MSECURE_PIN_ON_HS		1	//TI Patch: MSECURE Pin mode change
@@ -547,9 +565,6 @@ static void __init omap_board_init(void)
 #endif
 
 	printk("WL12XX-DBG: Initializing wifi drivers (wl12xx_sdio)...\n");
-	printk("WL12XX-DBG: aalto_wifi_init NOW running!\n");
-	aalto_wifi_init,
-	printk("WL12XX-DBG: Finished intializing wifi drivers\n");
 	omap_board_peripherals_init();
 	omap_board_display_init(OMAP_DSS_VENC_TYPE_COMPOSITE);
 	usb_uhhtll_init(&usbhs_pdata);
